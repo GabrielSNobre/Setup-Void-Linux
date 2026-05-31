@@ -39,7 +39,7 @@ sudo xbps-install -Sy \
 	autotiling \
 	rofi \
 	picom \
-	i3-lock
+	i3lock
 
 echo -e "\nInicializando serviços básicos..."
 sudo ln -s /etc/sv/dbus /var/service
