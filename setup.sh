@@ -17,7 +17,7 @@ echo -e "Instalando pacotes minimos...\n"
 sudo xbps-install -Sy \
 	i3 i3status \
 	neovim \
-	xorg-minimal \
+	xorg \
 	xinit \
 	xf86-input-libinput \
 	mesa-dri \
@@ -39,7 +39,9 @@ sudo xbps-install -Sy \
 	autotiling \
 	rofi \
 	picom \
-	i3lock
+	i3lock \
+	yazi \
+	chromium
 
 echo -e "\nInicializando serviços básicos..."
 sudo ln -s /etc/sv/dbus /var/service
@@ -90,11 +92,12 @@ exec_always --no-startup-id autotiling
 
 # Binds básicas para uso do i3
 
-bindsym $mod+Return exec $term				# Executa o Terminal
-bindsym $mod+Space exec $menu				# Executa o Menu Lançador
-bindsym $mod+q kill							# Mata a Janela
-bindsym $mod+Shift+r i3-msg reload			# Reinicia o i3
-bindsym $mod+Shift+Space floating toggle	# Deixa a janela em modo flutuante
+bindsym $mod+Return exec $term				
+bindsym $mod+space exec $menu			
+bindsym $mod+q kill					
+bindsym $mod+Shift+r exec i3-msg reload	
+bindsym $mod+Shift+space floating toggle	
+bindsym $mod+f exec $term -e yazi
 
 # Abre o menu de saída do sistema
 bindsym $mod+Shift+e exec ~/.config/i3/scripts/exit-menu.sh
@@ -119,14 +122,14 @@ bindsym $mod+Shift+4 move container to workspace number 4
 bindsym $mod+Shift+5 move container to workspace number 5
 
 # Layouts
-bindsym $mod+w layout toggle tabbed 	# Define o Layout das janelas como em Abas
-bindsym $mod+e layout toggle split		# Define elas de volta para as janelas divididas
-bindsym $mod+v split v					# Split Vertical
-bindsym $mod+b split h					# Split Horinzontal
+bindsym $mod+w layout toggle tabbed 
+bindsym $mod+e layout toggle split
+bindsym $mod+v split v		
+bindsym $mod+b split h	
 
 
 # Fullscreen
-bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle
 
 # Movimentação pelo sistema
 bindsym $mod+l focus right
@@ -135,8 +138,8 @@ bindsym $mod+k focus up
 bindsym $mod+j focus down
 
 # Cresce ou diminui as janelas
-bindsym $mod+Shift+l resize shrink width 20px 	# Cresce para direita
-bindsym $mod+Shift+h resize grow width 20px		# Cresce para esquerda
+bindsym $mod+Shift+l resize shrink width 20px
+bindsym $mod+Shift+h resize grow width 20px
 
 
 # Barra superior simples
@@ -209,8 +212,6 @@ vsync = true
 
 # Otimizações
 use-damage = true
-glx-swap-method = "undefined"
-xrender-sync-fence = false
 backend = "xrender"
 
 # Exclusões de sombras
@@ -225,6 +226,7 @@ EOF
 mkdir ~/.config/i3status
 cat > ~/.config/i3status/config << 'EOF'
 general {
+    output_format = "i3bar"
     colors = true
     interval = 1
 }
@@ -239,7 +241,7 @@ order += "disk /"
 order += "tztime local"
 
 wireless _first_ {
-    format = "WIFI: %quality%% %essid"
+    format_up = "WIFI: %quality %essid"
     format_down = "WIFI: down"
 }
 
@@ -256,13 +258,11 @@ cpu_temperature 0 {
 }
 
 cpu_usage {
-    format = "CPU: %usage%%"
+    format = "CPU: %usage"
 }
 
 memory {
     format = "RAM: %used / %total"
-    format_used = "RAM: %used"
-    format_free = "RAM: free"
     threshold_degraded = "10%"
     format_degraded = "RAM: %free (FREE)"
 }
@@ -273,7 +273,6 @@ load {
 
 disk / {
     format = "HD: %free"
-    format_used = "HD: %used"
     prefix_type = "binary"
 }
 
