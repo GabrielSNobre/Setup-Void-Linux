@@ -37,7 +37,9 @@ sudo xbps-install -Sy \
 	xauth \
 	alacritty \
 	autotiling \
-	rofi
+	rofi \
+	picom \
+	i3-lock
 
 echo -e "\nInicializando serviços básicos..."
 sudo ln -s /etc/sv/dbus /var/service
@@ -50,7 +52,7 @@ sudo ln -s /usr/share/examples/wireplumber/10-wireplumber.conf /etc/pipewire/pip
 sudo ln -s /usr/share/examples/pipewire/20-pipewire-pulse.conf /etc/pipewire/pipewire.conf.d
 
 mkdir ~/.wallpaper
-wget -O ~/.wallpaper/wallpaper.png "https://github.com/mngshm/voidwall/blob/main/assets/walls/5.png ~/.wallpaper" &> /dev/null || echo "Falha no download do wallpaper"
+wget -O ~/.wallpaper/wallpaper.png "https://github.com/mngshm/voidwall/blob/main/assets/walls/5.png" &> /dev/null || echo "Falha no download do wallpaper"
 
 echo -e "\nCriando scripts de inicializaçao.."
 mkdir -p ~/.config/i3/scripts
